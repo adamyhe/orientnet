@@ -94,3 +94,24 @@ def multinomial_nll(true_counts, logits):
     )
     # return negative log probabilities
     return -tf.reduce_sum(dist.log_prob(true_counts))
+
+
+def beta_regression_loss(y_true, y_pred):
+    """
+    Beta regression loss function for Keras models.
+    """
+    # Ensure the model outputs (alpha and beta) are positive
+    alpha = tf.exp(y_pred[..., 0])  # Exponentiate to ensure positivity
+    beta = tf.exp(y_pred[..., 1])  # Exponentiate to ensure positivity
+
+    # Log likelihood of the Beta distribution
+    log_likelihood = (alpha - 1) * tf.math.log(y_true) + (beta - 1) * tf.math.log(
+        1 - y_true
+    )
+    log_beta_normalization = (
+        tf.math.lgamma(alpha) + tf.math.lgamma(beta) - tf.math.lgamma(alpha + beta)
+    )
+
+    # Negative log-likelihood (for minimization)
+    negative_log_likelihood = -tf.reduce_mean(log_likelihood - log_beta_normalization)
+    return negative_log_likelihood
