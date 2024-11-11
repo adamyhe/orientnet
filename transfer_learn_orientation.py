@@ -91,7 +91,7 @@ pretrained_model = tf.keras.models.Model(
 pretrained_model.compile(
     optimizer=rnn_v10.optimizer(**rnn_v10.opt_hyperparameters),
     loss=BinaryCrossentropy(),
-    metrics={"pearson": custom_loss.corr},
+    metrics={"new_sigmoid": custom_loss.corr},
 )
 
 # Train model
