@@ -33,7 +33,7 @@ def warmup_lr(epoch, lr):
         return lr
 
 
-outdir = Path(f"/home2/ayh8/orientnet/ensemble_models/f{fold}/")
+outdir = Path(f"ensemble_models/f{fold}/")
 
 # Create dataset generators
 with open(outdir.joinpath("dataset_params.json"), "r") as f:
@@ -64,7 +64,7 @@ val_gen = ogen.OGen(*val_args)
 # Load model
 nn = clipnet.CLIPNET(n_gpus=1, use_specific_gpu=gpu)
 pretrained_model = tf.keras.models.load_model(
-    f"/home2/ayh8/clipnet/ensemble_models/fold_{fold}.h5", compile=False
+    f"../clipnet/ensemble_models/fold_{fold}.h5", compile=False
 )
 
 # Freeze batch normalization layers
