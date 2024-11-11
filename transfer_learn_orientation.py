@@ -72,10 +72,12 @@ for layer in pretrained_model.layers:
     if isinstance(layer, tf.keras.layers.BatchNormalization):
         layer.trainable = False
 # Define new output layer
-new_output = layers.Activation("sigmoid")(
-    layers.BatchNormalization()(
-        layers.Dense(1)(
-            layers.GlobalAvgPool1D()(
+new_output = layers.Activation("sigmoid", name="new_sigmoid")(
+    layers.BatchNormalization(
+        name="new_batch_normalization",
+    )(
+        layers.Dense(1, name="new_dense")(
+            layers.GlobalAvgPool1D(name="new_global_avg_pool_1d")(
                 pretrained_model.get_layer("max_pooling1d_2").output
             )
         )
