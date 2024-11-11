@@ -16,10 +16,10 @@ import ogen
 import rnn_v10
 
 fold = int(sys.argv[1])
-gpu = int(sys.argv[2])
-
-gpus = tf.config.list_physical_devices("GPU")
-tf.config.set_visible_devices(gpus[gpu], "GPU")
+if len(sys.argv) > 2:
+    gpu = int(sys.argv[2])
+    gpus = tf.config.list_physical_devices("GPU")
+    tf.config.set_visible_devices(gpus[gpu], "GPU")
 
 
 def warmup_lr(epoch, lr):
