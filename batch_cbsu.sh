@@ -4,14 +4,14 @@
 #SBATCH --ntasks=1
 #SBATCH --ntasks-per-gpu=1
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=64G
+#SBATCH --mem=128G
 #SBATCH --nodes=1
 #SBATCH --time=72:00:00
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --mail-type=all
 #SBATCH --mail-user=ayh8@cornell.edu
-#SBATCH --array=1-9
+#SBATCH --array=1-5
 
 # Script to run the training of the model on the CBSU cluster
 
