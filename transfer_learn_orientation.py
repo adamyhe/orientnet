@@ -74,7 +74,7 @@ for layer in pretrained_model.layers:
 
 
 # Define new output layer
-def bounded_output(x, lower, upper, name="orientation_index"):
+def bounded_output(x, lower=0.5, upper=1.0, name="orientation_index"):
     scale = upper - lower
     return scale * layers.Activation("sigmoid", name=name)(x) + lower
 
