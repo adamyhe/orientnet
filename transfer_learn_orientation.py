@@ -76,7 +76,7 @@ for layer in pretrained_model.layers:
 # We need a custom output layer to bound the output between 0.5 and 1.0
 def bounded_output(x, lower=0.5, upper=1.0, name="orientation_index"):
     scale = upper - lower
-    return scale * layers.Activation("sigmoid", name=name)(x) + lower
+    return tf.math.add(scale * layers.Activation("sigmoid")(x), lower, name=name)
 
 
 # Define new model
@@ -100,7 +100,7 @@ pretrained_model = tf.keras.models.Model(
 pretrained_model.compile(
     optimizer=rnn_v10.optimizer(**rnn_v10.opt_hyperparameters),
     loss=BinaryCrossentropy(),
-    metrics={"orientation_index": custom_loss.corr},
+    metrics=custom_loss.corr,
 )
 
 # Train model
