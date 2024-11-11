@@ -27,4 +27,4 @@ conda activate clipnet
 echo "Running training script"
 
 cd /home2/ayh8/orientnet/
-time python transfer_learn_orientation.py $SLURM_ARRAY_TASK_ID 0
+time python transfer_learn_orientation.py $SLURM_ARRAY_TASK_ID

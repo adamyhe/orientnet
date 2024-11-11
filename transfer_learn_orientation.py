@@ -11,13 +11,15 @@ from tensorflow.keras.callbacks import CSVLogger, LearningRateScheduler
 from tensorflow.keras.losses import BinaryCrossentropy
 from tqdm.keras import TqdmCallback
 
-import clipnet
 import custom_loss
 import ogen
 import rnn_v10
 
 fold = int(sys.argv[1])
 gpu = int(sys.argv[2])
+
+gpus = tf.config.list_physical_devices("GPU")
+tf.config.set_visible_devices(gpus[gpu], "GPU")
 
 
 def warmup_lr(epoch, lr):
@@ -62,7 +64,6 @@ train_gen = ogen.OGen(*train_args)
 val_gen = ogen.OGen(*val_args)
 
 # Load model
-nn = clipnet.CLIPNET(n_gpus=1, use_specific_gpu=gpu)
 pretrained_model = tf.keras.models.load_model(
     f"../clipnet/ensemble_models/fold_{fold}.h5", compile=False
 )
@@ -113,7 +114,6 @@ checkpt = tf.keras.callbacks.ModelCheckpoint(
     model_filepath, verbose=0, save_best_only=True
 )
 early_stopping = tf.keras.callbacks.EarlyStopping(verbose=1, patience=10)
-training_time = clipnet.TimeHistory()
 tqdm_callback = TqdmCallback(verbose=1, bar_format="{l_bar}{bar:10}{r_bar}{bar:-10b}")
 csv_logger = CSVLogger(
     filename=outdir.joinpath("transfer.log"),
@@ -129,7 +129,6 @@ fit_model = pretrained_model.fit(
     callbacks=[
         checkpt,
         early_stopping,
-        training_time,
         tqdm_callback,
         csv_logger,
         LearningRateScheduler(warmup_lr),
