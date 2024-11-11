@@ -71,8 +71,15 @@ pretrained_model = tf.keras.models.load_model(
 for layer in pretrained_model.layers:
     if isinstance(layer, tf.keras.layers.BatchNormalization):
         layer.trainable = False
+
+
 # Define new output layer
-new_output = layers.Activation("sigmoid", name="new_sigmoid")(
+def bounded_output(x, lower, upper, name="orientation_index"):
+    scale = upper - lower
+    return scale * layers.Activation("sigmoid", name=name)(x) + lower
+
+
+new_output = bounded_output(
     layers.BatchNormalization(
         name="new_batch_normalization",
     )(
