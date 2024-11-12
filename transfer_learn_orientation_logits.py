@@ -36,7 +36,7 @@ def warmup_lr(epoch, lr):
         return lr
 
 
-outdir = Path(f"ensemble_models/f{fold}/")
+outdir = Path(f"ensemble_models_logits/f{fold}/")
 
 # Create dataset generators
 with open(outdir.joinpath("dataset_params.json"), "r") as f:
