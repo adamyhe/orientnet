@@ -11,10 +11,10 @@ import os
 import time
 from pathlib import Path
 
-import cgen
 import GPUtil
 import numpy as np
 
+import ogen
 import utils
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "4"
@@ -178,8 +178,8 @@ class CLIPNET:
                 "batch_size": batch_size,
                 "pad": self.dataset_params["pad"],
             }
-            train_gen = cgen.CGen(**train_args)
-            val_gen = cgen.CGen(**val_args)
+            train_gen = ogen.OGen(**train_args)
+            val_gen = ogen.OGen(**val_args)
             # compile model
             if resume_checkpoint is not None:
                 self.fit_model = tf.keras.models.load_model(
