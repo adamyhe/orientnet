@@ -118,13 +118,15 @@ def beta_regression_loss(y_true, y_pred):
     return negative_log_likelihood
 
 
-def rescale_bce(y_true, y_pred, lower=0.5, upper=1.0):
+def rescale_sigmoid(logits, lower=0.5, upper=1.0):
     scale = upper - lower
-    y_pred_scaled = lower + scale * tf.math.sigmoid(y_pred)
-    return BinaryCrossentropy()(y_true, y_pred_scaled)
+    scaled = lower + scale * tf.math.sigmoid(logits)
+    return scaled
+
+
+def rescale_bce(y_true, y_pred, lower=0.5, upper=1.0):
+    return BinaryCrossentropy()(y_true, rescale_sigmoid(y_pred, lower, upper))
 
 
 def rescale_corr(y_true, y_pred, lower=0.5, upper=1.0):
-    scale = upper - lower
-    y_pred_scaled = lower + scale * tf.math.sigmoid(y_pred)
-    return corr(y_true, y_pred_scaled)
+    return corr(y_true, rescale_sigmoid(y_pred, lower, upper))
