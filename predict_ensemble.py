@@ -8,7 +8,7 @@ import argparse
 import logging
 import os
 
-import h5py
+import numpy as np
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "4"
 logging.getLogger("tensorflow").setLevel(logging.FATAL)
@@ -60,9 +60,7 @@ def main():
         low_mem=True,
         silence=args.silence,
     )
-    with h5py.File(args.output_fp, "w") as hf:
-        hf.create_dataset("track", data=ensemble_predictions[0], compression="gzip")
-        hf.create_dataset("quantity", data=ensemble_predictions[1], compression="gzip")
+    np.savez_compressed(args.output_fp, ensemble_predictions)
 
 
 if __name__ == "__main__":
