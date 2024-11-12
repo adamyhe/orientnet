@@ -265,12 +265,9 @@ class CLIPNET:
         for i in range(len(models)):
             models[i]._name = f"model_{i}"
         inputs = models[0].input
-        tracks = [models[i](inputs)[0] for i in range(len(models))]
-        quantities = [models[i](inputs)[1] for i in range(len(models))]
-        outputs = [
-            tf.keras.layers.Average()(tracks),
-            tf.keras.layers.Average()(quantities),
-        ]
+        outputs = tf.keras.layers.Average()(
+            [models[i](inputs) for i in range(len(models))]
+        )
         ensemble = tf.keras.models.Model(inputs=inputs, outputs=outputs)
         return ensemble
 
@@ -314,10 +311,7 @@ class CLIPNET:
                     disable=silence,
                 )
             ]
-            y_predict = [
-                np.concatenate([chunk[0] for chunk in y_predict_handle], axis=0),
-                np.concatenate([chunk[1] for chunk in y_predict_handle], axis=0),
-            ]
+            y_predict = np.concatenate([chunk for chunk in y_predict_handle], axis=0)
         else:
             y_predict = model.predict(X, batch_size=self.nn.batch_size, verbose=1)
         return y_predict
