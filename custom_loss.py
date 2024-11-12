@@ -1,6 +1,7 @@
 """This implements a number of custom loss/metric functions for use in CLIPNET."""
 
 import tensorflow as tf
+from tensorflow.keras.losses import BinaryCrossentropy
 
 
 def pearsonr(y_true, y_pred):
@@ -115,3 +116,15 @@ def beta_regression_loss(y_true, y_pred):
     # Negative log-likelihood (for minimization)
     negative_log_likelihood = -tf.reduce_mean(log_likelihood - log_beta_normalization)
     return negative_log_likelihood
+
+
+def rescale_bce(y_true, y_pred, lower=0.5, upper=1.0):
+    scale = upper - lower
+    y_pred_scaled = lower + scale * tf.math.sigmoid(y_pred)
+    return BinaryCrossentropy()(y_true, y_pred_scaled)
+
+
+def rescale_corr(y_true, y_pred, lower=0.5, upper=1.0):
+    scale = upper - lower
+    y_pred_scaled = lower + scale * tf.math.sigmoid(y_pred)
+    return corr(y_true, y_pred_scaled)

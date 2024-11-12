@@ -43,7 +43,13 @@ def profile_contrib(model):
     return contrib
 
 
-def load_seqs(fasta_fp, return_twohot_explains=True, background_fp=None, n_subset=100, seed=None):
+def orient_contrib(model):
+    return model.output
+
+
+def load_seqs(
+    fasta_fp, return_twohot_explains=True, background_fp=None, n_subset=100, seed=None
+):
     np.random.seed(seed)
     seqs_to_explain = pyfastx.Fasta(fasta_fp)
     background_seqs = (
@@ -140,12 +146,6 @@ def main():
         help="Where to write hypothetical attributions.",
     )
     parser.add_argument(
-        "--mode",
-        type=str,
-        default="quantity",
-        help="Calculate contrib scores for quantity or profile.",
-    )
-    parser.add_argument(
         "--gpu",
         type=int,
         default=None,
@@ -181,13 +181,6 @@ def main():
     if args.model_fp is None and args.model_dir is None:
         raise ValueError("Must specify either --model_fp or --model_dir.")
 
-    if args.mode == "quantity":
-        contrib = quantity_contrib
-    elif args.mode == "profile":
-        contrib = profile_contrib
-    else:
-        raise ValueError(f"Invalid mode: {args.mode}. Must be 'quantity' or 'profile'.")
-
     # Load sequences ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     seqs_to_explain, twohot_background = load_seqs(
@@ -203,7 +196,10 @@ def main():
     else:
         model_fps = list(glob.glob(os.path.join(args.model_dir, "*.h5")))
     explainers = create_explainers(
-        model_fps, twohot_background, contrib, args.silence or len(model_fps) == 1
+        model_fps,
+        twohot_background,
+        orient_contrib,
+        args.silence or len(model_fps) == 1,
     )
 
     # Calculate scores ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
