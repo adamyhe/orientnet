@@ -1,3 +1,5 @@
+# First attempt. Chop off the output layers, add sigmoid prediction layer.
+
 import json
 import math
 import os

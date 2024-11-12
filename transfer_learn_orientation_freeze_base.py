@@ -1,3 +1,5 @@
+# Second attempt. Same as first, but freeze base from previous model.
+
 import json
 import math
 import os
