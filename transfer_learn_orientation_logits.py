@@ -95,7 +95,7 @@ new_model = tf.keras.models.Model(
 pretrained_model.compile(
     optimizer=rnn_v10.optimizer(**rnn_v10.opt_hyperparameters),
     loss=custom_loss.rescale_bce,
-    metrics=custom_loss.rescale_corr,
+    metrics={"new_dropout": custom_loss.rescale_corr},
 )
 
 # Train model
