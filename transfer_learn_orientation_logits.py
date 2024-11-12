@@ -110,7 +110,7 @@ csv_logger = CSVLogger(
     separator=",",
     append=True,
 )
-fit_model = pretrained_model.fit(
+fit_model = new_model.fit(
     x=train_gen,
     validation_data=val_gen,
     epochs=rnn_v10.epochs,
