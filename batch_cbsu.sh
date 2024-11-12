@@ -11,7 +11,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mail-type=all
 #SBATCH --mail-user=ayh8@cornell.edu
-#SBATCH --array=1-5
+#SBATCH --array=1-9
 
 # Script to run the training of the model on the CBSU cluster
 
@@ -27,4 +27,4 @@ conda activate clipnet
 echo "Running training script"
 
 cd /home2/ayh8/orientnet/
-time python transfer_learn_orientation.py $SLURM_ARRAY_TASK_ID
+time python transfer_learn_orientation_logits.py $SLURM_ARRAY_TASK_ID
