@@ -195,6 +195,7 @@ def main():
         model_fps = [args.model_fp]
     else:
         model_fps = list(glob.glob(os.path.join(args.model_dir, "*.h5")))
+    print(model_fps)
     explainers = create_explainers(
         model_fps,
         twohot_background,
