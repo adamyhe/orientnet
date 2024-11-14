@@ -30,8 +30,6 @@ def warmup_lr(epoch, lr):
     print(f"LEARNING RATE = {lr}")
     if epoch < 1:
         return lr / 10
-    elif epoch == 1:
-        return lr * 10
     else:
         return lr
 
@@ -86,13 +84,16 @@ new_output = layers.Dropout(0.3, name="new_dropout")(
     )
 )
 
-new_model = tf.keras.models.Model(inputs=pretrained_model.input, outputs=new_output)
+new_model = tf.keras.models.Model(
+    inputs=pretrained_model.input,
+    outputs=new_output,
+)
 
 # Compile
 new_model.compile(
     optimizer=rnn_v10.optimizer(**rnn_v10.opt_hyperparameters),
-    loss=custom_loss.rescale_true_bce,
-    metrics={"new_dropout": custom_loss.rescale_true_corr},
+    loss=custom_loss.rescale_bce,
+    metrics={"new_dropout": custom_loss.rescale_corr},
 )
 
 # Train model
@@ -103,7 +104,9 @@ checkpt = tf.keras.callbacks.ModelCheckpoint(
 early_stopping = tf.keras.callbacks.EarlyStopping(verbose=1, patience=10)
 tqdm_callback = TqdmCallback(verbose=1, bar_format="{l_bar}{bar:10}{r_bar}{bar:-10b}")
 csv_logger = CSVLogger(
-    filename=outdir.joinpath("orientnet.log"), separator=",", append=True
+    filename=outdir.joinpath("transfer.log"),
+    separator=",",
+    append=True,
 )
 fit_model = new_model.fit(
     x=train_gen,

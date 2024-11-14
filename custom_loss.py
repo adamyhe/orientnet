@@ -130,3 +130,11 @@ def rescale_bce(y_true, y_pred, lower=0.5, upper=1.0):
 
 def rescale_corr(y_true, y_pred, lower=0.5, upper=1.0):
     return corr(y_true, rescale_sigmoid(y_pred, lower, upper))
+
+
+def rescale_true_bce(y_true, y_pred, lower=0.0, upper=1.0):
+    return BinaryCrossentropy()(rescale_sigmoid(y_true, lower, upper), y_pred)
+
+
+def rescale_true_corr(y_true, y_pred, lower=0.0, upper=1.0):
+    return corr(rescale_sigmoid(y_true, lower, upper), y_pred)
