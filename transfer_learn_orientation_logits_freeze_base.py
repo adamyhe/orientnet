@@ -1,4 +1,5 @@
-# First attempt. Chop off the output layers, add sigmoid prediction layer.
+# Second attempt. Chop off the output layers, add predict w/ linear layer (logits, apply sigmoid + rescaling in loss function).
+# But freeze the base model layers.
 
 import json
 import math
@@ -69,8 +70,7 @@ pretrained_model = tf.keras.models.load_model(
 
 # Freeze batch normalization layers
 for layer in pretrained_model.layers:
-    if isinstance(layer, tf.keras.layers.BatchNormalization):
-        layer.trainable = False
+    layer.trainable = False
 
 
 # Define new model
@@ -104,9 +104,7 @@ checkpt = tf.keras.callbacks.ModelCheckpoint(
 early_stopping = tf.keras.callbacks.EarlyStopping(verbose=1, patience=10)
 tqdm_callback = TqdmCallback(verbose=1, bar_format="{l_bar}{bar:10}{r_bar}{bar:-10b}")
 csv_logger = CSVLogger(
-    filename=outdir.joinpath("transfer.log"),
-    separator=",",
-    append=True,
+    filename=outdir.joinpath("orientnet.log"), separator=",", append=True
 )
 fit_model = new_model.fit(
     x=train_gen,

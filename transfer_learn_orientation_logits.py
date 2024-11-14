@@ -1,4 +1,4 @@
-# First attempt. Chop off the output layers, add sigmoid prediction layer.
+# Second attempt. Chop off the output layers, add predict w/ linear layer (logits, apply sigmoid + rescaling in loss function).
 
 import json
 import math
@@ -91,8 +91,8 @@ new_model = tf.keras.models.Model(inputs=pretrained_model.input, outputs=new_out
 # Compile
 new_model.compile(
     optimizer=rnn_v10.optimizer(**rnn_v10.opt_hyperparameters),
-    loss=custom_loss.rescale_true_bce,
-    metrics={"new_dropout": custom_loss.rescale_true_corr},
+    loss=custom_loss.rescale_bce,
+    metrics={"new_dropout": custom_loss.rescale_corr},
 )
 
 # Train model
