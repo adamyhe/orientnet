@@ -124,6 +124,12 @@ def rescale_sigmoid(logits, lower=0.5, upper=1.0):
     return scaled
 
 
+def rescale(x, lower=0.0, upper=1.0):
+    scale = upper - lower
+    scaled = lower + scale * x
+    return scaled
+
+
 def rescale_bce(y_true, y_pred, lower=0.5, upper=1.0):
     return BinaryCrossentropy()(y_true, rescale_sigmoid(y_pred, lower, upper))
 
@@ -133,10 +139,8 @@ def rescale_corr(y_true, y_pred, lower=0.5, upper=1.0):
 
 
 def rescale_true_bce(y_true, y_pred, lower=0.0, upper=1.0):
-    return BinaryCrossentropy()(
-        rescale_sigmoid(y_true, lower, upper), tf.math.sigmoid(y_pred)
-    )
+    return BinaryCrossentropy()(rescale(y_true, lower, upper), tf.math.sigmoid(y_pred))
 
 
 def rescale_true_corr(y_true, y_pred, lower=0.0, upper=1.0):
-    return corr(rescale_sigmoid(y_true, lower, upper), tf.math.sigmoid(y_pred))
+    return corr(rescale(y_true, lower, upper), tf.math.sigmoid(y_pred))
