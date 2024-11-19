@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=attr
+#SBATCH --job-name=orientnet
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --ntasks-per-gpu=1
@@ -27,9 +27,4 @@ conda activate clipnet
 echo "Running training script"
 
 cd /home2/ayh8/orientnet/
-time python calculate_deepshap.py \
-    ../data/lcl/all_tss_windows_reference_seq.fna.gz \
-    ../data/lcl/all_tss_windows_deepshap_${SLURM_ARRAY_TASK_ID}.npz \
-    ../data/lcl/all_tss_windows_ohe.npz \
-    --model_fp ensemble_models_logits_rescale_true/fold_${SLURM_ARRAY_TASK_ID}.h5 \
-    --gpu 0
+time python transfer_learn_orientation_logits_rescale_true.py $SLURM_ARRAY_TASK_ID
