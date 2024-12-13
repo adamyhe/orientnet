@@ -76,12 +76,10 @@ for layer in pretrained_model.layers:
 
 
 # Define new model
-new_output = layers.Dropout(0.3, name="new_dropout")(
-    layers.BatchNormalization(name="new_batch_normalization")(
-        layers.Dense(1, name="new_dense")(
-            layers.GlobalAvgPool1D(name="new_global_avg_pool_1d")(
-                pretrained_model.get_layer("max_pooling1d_2").output
-            )
+new_output = layers.BatchNormalization(name="new_batch_normalization")(
+    layers.Dense(1, name="new_dense")(
+        layers.GlobalAvgPool1D(name="new_global_avg_pool_1d")(
+            pretrained_model.get_layer("max_pooling1d_2").output
         )
     )
 )

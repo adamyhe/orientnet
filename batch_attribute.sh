@@ -29,3 +29,10 @@ time python calculate_deepshap.py \
     ../data/lcl/all_tss_windows_ohe.npz \
     --model_fp ensemble_models_logits_rescale_true/fold_${SLURM_ARRAY_TASK_ID}.h5 \
     --gpu 0
+
+time python calculate_deepshap.py \
+    ../data/lcl/all_tss_windows_reference_seq.fna.gz \
+    ../data/lcl/all_tss_windows_deepshap_9.npz \
+    ../data/lcl/all_tss_windows_ohe.npz \
+    --model_fp ensemble_models_logits_rescale_true/fold_9.h5 \
+    --gpu 1

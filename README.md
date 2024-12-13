@@ -41,14 +41,14 @@ Modisco
 
 ```bash
 cd ../data/lcl/
-export NUMBA_NUM_THREADS=16
+export NUMBA_NUM_THREADS=32
 time modisco motifs \
-    -s merged_sequence_0_ohe.npz \
-    -a merged_sequence_0_orientnet_deepshap.npz \
+    -s all_tss_windows_ohe.npz \
+    -a all_tss_windows_orientnet_deepshap.npz \
     -n 1000000 -l 50 -v \
-    -o merged_sequence_0_orientnet_modisco.h5
+    -o all_tss_windows_orientnet_deepshap.h5
 time modisco report \
-    -i merged_sequence_0_orientnet_modisco.h5 \
-    -o merged_sequence_0_orientnet_modisco/ \
+    -i all_tss_windows_orientnet_deepshap.h5 \
+    -o all_tss_windows_orientnet_deepshap/ \
     -m /home2/ayh8/data/JASPAR/JASPAR2024_CORE_vertebrates_non-redundant_pfms_meme.txt
 ```
