@@ -17,11 +17,11 @@ python predict_ensemble.py \
     --model_dir ensemble_models_logits_rescale_true/ \
     --gpu 1 
 
-python predict_ensemble.py \
-    ../data/lcl/merged_sequence_0.fna.gz \
-    ../data/lcl/merged_orientation_index_logits_freeze_base_0.npz \
-    --model_dir ensemble_models_logits_freeze_base/ \
-    --gpu 1 
+#python predict_ensemble.py \
+#    ../data/lcl/merged_sequence_0.fna.gz \
+#    ../data/lcl/merged_orientation_index_logits_freeze_base_0.npz \
+#    --model_dir ensemble_models_logits_freeze_base/ \
+#    --gpu 1 
 
 python benchmark_orientnet.py
 python benchmark_clipnet_baseline.py
@@ -32,7 +32,7 @@ python benchmark_clipnet_baseline.py
 DeepSHAP
 
 ```bash
-python calculate_deepshap.py ../data/lcl/merged_sequence_0.fna.gz ../data/lcl/merged_sequence_0_orientnet_deepshap.npz ../data/lcl/merged_sequence_0_ohe.npz --model_dir ensemble_models_logits_v0/ --gpu 1
+#python calculate_deepshap.py ../data/lcl/merged_sequence_0.fna.gz ../data/lcl/merged_sequence_0_orientnet_deepshap.npz ../data/lcl/merged_sequence_0_ohe.npz --model_dir ensemble_models_logits_v0/ --gpu 1
 
 python calculate_deepshap.py ../data/lcl/all_tss_windows_reference_seq.fna.gz ../data/lcl/all_tss_windows_deepshap.npz ../data/lcl/all_tss_windows_ohe.npz --model_dir ensemble_models_logits_rescale_true/ --gpu 1
 ```
